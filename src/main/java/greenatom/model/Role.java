@@ -8,12 +8,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
+@Entity
 @Data
 @AllArgsConstructor
-@Entity
 @NoArgsConstructor
 @Table(name = "roles")
 public class Role implements Serializable {
@@ -28,5 +28,9 @@ public class Role implements Serializable {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private Collection<User> users = new HashSet<>();
+    private Set<User> users = new HashSet<>();
+
+    public Role(String name) {
+        this.name = name;
+    }
 }
