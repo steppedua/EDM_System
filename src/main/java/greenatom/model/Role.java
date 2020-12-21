@@ -1,18 +1,19 @@
 package greenatom.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString(of = {"id", "name"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "roles")
@@ -28,9 +29,5 @@ public class Role implements Serializable {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
-
-    public Role(String name) {
-        this.name = name;
-    }
+    private List<User> users = new ArrayList<>();
 }

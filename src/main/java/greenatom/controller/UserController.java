@@ -7,7 +7,6 @@ import greenatom.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +25,7 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @GetMapping("/")
-    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_USER')")
+    @GetMapping
     public ResponseEntity<List<UserDto>> getUserList() {
         List<User> userList = userServiceImpl.getUserList();
 
@@ -41,7 +39,7 @@ public class UserController {
         return ResponseEntity.ok(userMapper.toUserByIdDto(userById.get()));
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<UserDto> createUser(
             @RequestBody UserDto userDto
     ) {

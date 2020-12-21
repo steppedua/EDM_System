@@ -1,18 +1,19 @@
 package greenatom.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString(of = {"id"})
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserDto implements Serializable {
     private Long id;
     private String username;
     private String password;
-    private Set<RoleDto> roles;
+    private List<RoleDto> roles;
 }

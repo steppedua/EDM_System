@@ -1,8 +1,7 @@
 package greenatom.service;
 
-import greenatom.dto.UserDto;
-import greenatom.model.Role;
 import greenatom.model.User;
+import greenatom.repository.RoleRepository;
 import greenatom.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +13,12 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -44,11 +45,12 @@ public class UserServiceImpl implements UserService {
         }
 
         User newUser = new User();
-        user.setUsername(newUser.getUsername());
-        user.setPassword(newUser.getPassword());
-        user.setRoles(Collections.singleton(new Role("ROLE_USER")));
+        newUser.setId(user.getId());
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(user.getPassword());
+        newUser.setRoles(Collections.singletonList(roleRepository.findByName("ROLE_USER")));
 
-        return Optional.of(userRepository.saveAndFlush(user));
+        return Optional.of(userRepository.saveAndFlush(newUser));
     }
 
     @Override
