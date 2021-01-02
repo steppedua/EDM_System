@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userFromDB = userRepository.findByUsername(user.getUsername());
 
         if (userFromDB.isPresent()) {
-            Optional.empty();
+            return Optional.empty();
         }
 
         User newUser = new User();

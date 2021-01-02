@@ -4,6 +4,7 @@ import greenatom.dto.UserDto;
 import greenatom.mappers.UserMapper;
 import greenatom.model.User;
 import greenatom.service.UserServiceImpl;
+import greenatom.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,24 +41,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(
-            @RequestBody UserDto userDto
-    ) {
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
         userServiceImpl.createUser(userMapper.toCreateUser(userDto));
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeUser(@PathVariable("id") Long id) {
-        return responseEntityOf(userServiceImpl.removeUser(id));
-    }
-
-    private ResponseEntity<?> responseEntityOf(boolean value) {
-        if (value) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-
+        return ResponseUtils.responseEntityOf(userServiceImpl.removeUser(id));
     }
 }
