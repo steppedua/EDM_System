@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 @Getter
 @Setter
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
 public class User implements Serializable {
 
     @Id
@@ -43,5 +43,5 @@ public class User implements Serializable {
 
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Document> documents = new ArrayList<>();
+    private List<UserDocuments> documents = new ArrayList<>();
 }

@@ -1,18 +1,20 @@
 package greenatom.service;
 
 import greenatom.exception.DocumentNotFoundException;
-import greenatom.model.Document;
-import greenatom.model.User;
+import greenatom.model.*;
 import greenatom.repository.DocumentRepository;
+import greenatom.repository.UserDocumentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
-import java.io.File;
 
 
 @Service
@@ -29,22 +31,31 @@ public class DocumentServiceImpl implements DocumentService {
     private String uploadPath;
 
     @Override
-    public Optional<Document> createDocument(MultipartFile file, User user) throws IOException {
+    public Document createDocument(MultipartFile file,
+                                   UserDocuments userDocuments,
+                                   DocumentType documentType,
+                                   DocumentGroups documentGroups,
+                                   List<Attributes> attributesList
+    ) throws IOException {
 
         Optional<Document> documentFromDB = documentRepository.findByName(file.getOriginalFilename());
 
         if (documentFromDB.isPresent()) {
-            return Optional.empty();
+            Optional.empty(); //есть проблемы с Optional
         }
 
         Document document = new Document(
-                uploadPath + File.separator + file.getOriginalFilename(),
-                file.getContentType(),
+                file.getOriginalFilename(),
                 file.getBytes(),
-                user
+                userDocuments,
+                documentType,
+                documentGroups,
+                attributesList
         );
 
-        return Optional.of(documentRepository.saveAndFlush(document));
+        Files.createFile(Path.of(uploadPath + File.separator + file.getOriginalFilename()));
+
+        return documentRepository.saveAndFlush(document);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package greenatom.service;
 
-import greenatom.model.Document;
-import greenatom.model.User;
+import greenatom.model.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -9,7 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DocumentService {
-    Optional<Document> createDocument(MultipartFile file, User user) throws IOException;
+    Document createDocument(
+            MultipartFile file,
+            UserDocuments userDocuments,
+            DocumentType documentType,
+            DocumentGroups documentGroups,
+            List<Attributes> attributesList) throws IOException;
 
     Optional<Document> getDocumentById(Long id);
 

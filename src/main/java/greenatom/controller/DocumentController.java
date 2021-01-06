@@ -35,7 +35,7 @@ public class DocumentController {
             @RequestParam("file") MultipartFile file
     ) throws IOException {
 
-        documentServiceImpl.createDocument(file, user);
+//        documentServiceImpl.createDocument(file, user);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
