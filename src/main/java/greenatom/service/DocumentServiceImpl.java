@@ -64,20 +64,23 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Optional<Document> getDocumentById(Long id) {
-        return documentRepository.findById(id).map(docId -> {
-            if (documentRepository.findById(docId.getId()).isEmpty()) {
+    public Optional<Document> getDocumentById(Long id, User user) {
+        return documentRepository.findByIdAndOwner(id, user).map(document -> {
+            if (documentRepository.findByIdAndOwner(document.getId(), document.getDocument().getOwner()).isEmpty()) {
                 return Optional.<Document>empty();
             }
-            return documentRepository.findById(docId.getId());
+            return documentRepository.findByIdAndOwner(document.getId(), document.getDocument().getOwner());
         }).orElseThrow(() -> new DocumentNotFoundException("Document not found with id: id = " + id));
     }
 
     @Override
-    public boolean removeDocumentById(Long id) {
-        return documentRepository.findById(id).map(user -> {
-            if (documentRepository.findById(user.getId()).isPresent()) {
-                documentRepository.deleteById(user.getId());
+    public boolean removeDocumentById(Long id, User user) {
+        return documentRepository.findByIdAndOwner(id, user).map(document -> {
+            if (documentRepository.findByIdAndOwner(
+                    document.getId(),
+                    document.getDocument().getOwner()
+            ).isPresent()) {
+                documentRepository.deleteById(document.getId());
                 return true;
             }
             return false;

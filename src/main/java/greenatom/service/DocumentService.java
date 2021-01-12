@@ -15,9 +15,9 @@ public interface DocumentService {
             DocumentGroups documentGroups,
             List<Attributes> attributesList) throws IOException;
 
-    Optional<Document> getDocumentById(Long id);
+    Optional<Document> getDocumentById(Long id, User user);
 
-    boolean removeDocumentById(Long id);
+    boolean removeDocumentById(Long id, User user);
 
     List<Document> getDocumentList();
 

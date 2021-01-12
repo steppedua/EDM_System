@@ -70,9 +70,9 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
     }
 
     @Override
-    public boolean deleteUserFolder(Long id, User user) {
-        return userDocumentsRepository.findByDocumentsIdAndOwner(id, user).map(userDocuments -> {
-            if (userDocumentsRepository.findByDocumentsIdAndOwner(id, user).isPresent()) {
+    public boolean deleteUserFolder(Long id, UserDocuments userDocuments) {
+        return userDocumentsRepository.findByDocumentsIdAndOwner(id, userDocuments.getOwner()).map(userDoc -> {
+            if (userDocumentsRepository.findByDocumentsIdAndOwner(id, userDocuments.getOwner()).isPresent()) {
                 userDocumentsRepository.deleteById(id);
                 return true;
             }
@@ -81,12 +81,29 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
     }
 
     @Override
-    public Optional<UserDocuments> getUserDocumentById(Long id, User user) {
-        return Optional.empty();
+    public Optional<UserDocuments> getUserDocumentById(Long id, UserDocuments userDocuments) {
+
+
+        return userDocumentsRepository.findByDocumentsIdAndOwner(id, userDocuments.getOwner())
+                .map(userDoc -> {
+                    if (userDocumentsRepository.findByDocumentsIdAndOwner(userDoc.getId(), userDoc.getOwner()).isPresent()) {
+                        return Optional.<UserDocuments>empty();
+                    }
+                    return userDocumentsRepository.findByDocumentsIdAndOwner(userDoc.getId(), userDoc.getOwner());
+                }).orElseThrow(
+                        () -> new DocumentNotFoundException("Document not found with id: id = " + id +
+                                " and user: " + userDocuments.getOwner())
+                );
     }
 
     @Override
-    public boolean deleteUserDocumentById(Long id, User user) {
-        return false;
+    public boolean deleteUserDocumentById(Long id, UserDocuments userDocuments) {
+        return userDocumentsRepository.findByDocumentsIdAndOwner(id, userDocuments.getOwner()).map(userDoc -> {
+            if (userDocumentsRepository.findByDocumentsIdAndOwner(id, userDoc.getOwner()).isPresent()) {
+                documentServiceImpl.removeDocumentById(userDoc.getId(), userDoc.getOwner());
+                return true;
+            }
+            return false;
+        }).orElse(false);
     }
 }

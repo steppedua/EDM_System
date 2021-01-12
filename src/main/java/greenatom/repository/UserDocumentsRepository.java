@@ -13,4 +13,6 @@ public interface UserDocumentsRepository extends JpaRepository<UserDocuments, Lo
     List<UserDocuments> findAllByOwnerId(Long id);
 
     Optional<UserDocuments> findByDocumentsIdAndOwner(Long id, User user);
+
+    void deleteByDocumentsIdAndOwner(Long id, User user);
 }

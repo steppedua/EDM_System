@@ -21,9 +21,9 @@ public interface UserDocumentsService {
 
     List<UserDocuments> getUserDocumentsList(UserDocuments userDocuments);
 
-    boolean deleteUserFolder(Long id, User user);
+    boolean deleteUserFolder(Long id, UserDocuments userDocuments);
 
-    Optional<UserDocuments> getUserDocumentById(Long id, User user);
+    Optional<UserDocuments> getUserDocumentById(Long id, UserDocuments userDocuments);
 
-    boolean deleteUserDocumentById(Long id, User user);
+    boolean deleteUserDocumentById(Long id, UserDocuments userDocuments);
 }
