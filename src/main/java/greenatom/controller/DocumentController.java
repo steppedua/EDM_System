@@ -1,13 +1,14 @@
 package greenatom.controller;
 
-import greenatom.dto.DocumentDto;
-import greenatom.mappers.DocumentMapper;
-import greenatom.model.Document;
-import greenatom.model.User;
-import greenatom.service.DocumentServiceImpl;
-import greenatom.util.ResponseUtils;
+import greenatom.dto.FullUserDto;
+import greenatom.dto.UserDocumentsDto;
+import greenatom.mappers.UserDocumentsMapper;
+import greenatom.model.*;
+import greenatom.service.UserDocumentsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -20,40 +21,60 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/documents")
 public class DocumentController {
-    private final DocumentServiceImpl documentServiceImpl;
-    private final DocumentMapper documentMapper;
+    private final UserDocumentsMapper userDocumentsMapper;
+    private final UserDocumentsServiceImpl userDocumentsServiceImpl;
 
     @Autowired
-    public DocumentController(DocumentServiceImpl documentService, DocumentMapper documentMapper) {
-        this.documentServiceImpl = documentService;
-        this.documentMapper = documentMapper;
+    public DocumentController(UserDocumentsMapper userDocumentsMapper,
+                              UserDocumentsServiceImpl userDocumentsService
+    ) {
+        this.userDocumentsMapper = userDocumentsMapper;
+        this.userDocumentsServiceImpl = userDocumentsService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<DocumentDto> createDocument(
+    //multipart/form-data; boundary=<calculated when request is sent>
+
+//    @RequestPart("attributes") List<Attributes> attributes,
+//    @RequestPart("type") DocumentType type,
+//    @RequestPart("groups") DocumentGroups groups,
+//    @RequestPart("userDocuments") UserDocuments userDocuments
+
+    @PostMapping(value = "/create", consumes = {"multipart/form-data"})
+    public ResponseEntity<UserDocumentsDto> createDocument(
             @AuthenticationPrincipal User user,
-            @RequestParam("file") MultipartFile file
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("documentProperties") FullUserDto fullUserDto
     ) throws IOException {
 
-//        documentServiceImpl.createDocument(file, user);
+        userDocumentsServiceImpl.addDocument(
+                file,
+                fullUserDto.getUserDocuments(),
+                user,
+                fullUserDto.getType(),
+                fullUserDto.getGroups(),
+                fullUserDto.getAttributes()
+        );
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .contentType(MediaType.APPLICATION_JSON).build();
+//        return ResponseEntity.status(HttpStatus.CREATED)
+//                .contentType(MediaType.APPLICATION_JSON).build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DocumentDto> getDocument(@PathVariable("id") Long id, @AuthenticationPrincipal User user) {
-        Optional<Document> document = documentServiceImpl.getDocumentById(id);
+    public ResponseEntity<UserDocumentsDto> getDocument(@PathVariable("id") Long id, UserDocuments userDocuments) {
+        Optional<UserDocuments> userDocumentById = userDocumentsServiceImpl.getUserDocumentById(id, userDocuments);
 
-        return ResponseEntity.ok(documentMapper.toDocumentByIdDto(document.get()));
+        return ResponseEntity.ok(userDocumentsMapper.toDocumentByIdDto(userDocumentById));
     }
 
-    @GetMapping
-    public ResponseEntity<List<DocumentDto>> getDocumentList(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(documentMapper.toDocumentsListDto(documentServiceImpl.getDocumentList()));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeDocumentById(@PathVariable("id") Long id, @AuthenticationPrincipal User user) {
-        return ResponseUtils.responseEntityOf(documentServiceImpl.removeDocumentById(id));
-    }
+//    @GetMapping
+//    public ResponseEntity<List<UserDocumentsDto>> getDocumentList(@AuthenticationPrincipal User user) {
+//        return ResponseEntity.ok(userDocumentsMapper.toDocumentsListDto(documentServiceImpl.getDocumentList()));
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<?> removeDocumentById(@PathVariable("id") Long id, @AuthenticationPrincipal User user) {
+//        return ResponseUtils.responseEntityOf(documentServiceImpl.removeDocumentById(id));
+//    }
 }
