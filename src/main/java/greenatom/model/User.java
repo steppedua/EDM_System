@@ -43,5 +43,5 @@ public class User implements Serializable {
 
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<UserDocuments> documents = new ArrayList<>();
+    private List<Document> documents = new ArrayList<>();
 }

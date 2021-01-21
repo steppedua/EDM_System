@@ -1,30 +1,21 @@
 package greenatom.service;
 
-import greenatom.exception.DocumentNotFoundException;
 import greenatom.model.*;
 import greenatom.repository.DocumentRepository;
-import greenatom.repository.UserDocumentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserDocumentsServiceImpl implements UserDocumentsService {
 
-    private final UserDocumentsRepository userDocumentsRepository;
+    private final DocumentRepository userDocumentsRepository;
     private final DocumentRepository documentRepository;
 
     @Autowired
-    public UserDocumentsServiceImpl(UserDocumentsRepository userDocumentsRepository,
+    public UserDocumentsServiceImpl(DocumentRepository userDocumentsRepository,
                                     DocumentRepository documentRepository
     ) {
         this.userDocumentsRepository = userDocumentsRepository;
@@ -35,9 +26,25 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
     private String uploadPath;
 
     @Override
+    public void uploadDocument(Document document) {
+        userDocumentsRepository.save(document);
+    }
+
+    @Override
+    public List<Document> getUserDocumentsList(User user) {
+        return null;
+    }
+
+    @Override
+    public boolean deleteUserDocumentById(Long id) {
+        return false;
+    }
+
+    /*@Override
     public Optional<UserDocuments> createUserFolder(UserDocuments userDocuments) {
 
-        Optional<UserDocuments> userDocumentsFromDb = userDocumentsRepository.findById(userDocuments.getId());
+        Optional<UserDocuments> userDocumentsFromDb
+                = userDocumentsRepository.findById(userDocuments.getId());
 
         if (userDocumentsFromDb.isPresent()) {
             return Optional.empty();
@@ -46,11 +53,10 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
         UserDocuments userDocumentsForDb = new UserDocuments(userDocuments.getOwner());
 
         return Optional.of(userDocumentsRepository.save(userDocumentsForDb));
-    }
+    }*/
 
-    @Override
-    public Optional<UserDocuments> addDocument(MultipartFile file,
-                                               UserDocuments userDocuments,
+    /*@Override
+    public Optional<Document> addDocument(MultipartFile file,
                                                User user,
                                                DocumentType documentType,
                                                DocumentGroups documentGroups,
@@ -59,7 +65,6 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
 
         Document document = createDocument(
                 file,
-                userDocuments,
                 documentType,
                 documentGroups,
                 attributesList
@@ -72,14 +77,14 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
 
                     return userDocumentsRepository.save(userDoc);
                 });
-    }
+    }*/
 
-    @Override
-    public List<UserDocuments> getUserDocumentsList(UserDocuments userDocuments) {
+    /*@Override
+    public List<Document> getUserDocumentsList(User user) {
         return userDocumentsRepository.findAllByOwnerId(userDocuments.getOwner().getId());
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean deleteUserFolder(Long id, UserDocuments userDocuments) {
         return userDocumentsRepository.findByDocumentsIdAndOwner(id, userDocuments.getOwner()).map(userDoc -> {
             if (userDocumentsRepository.findByDocumentsIdAndOwner(id, userDocuments.getOwner()).isPresent()) {
@@ -88,10 +93,10 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
             }
             return false;
         }).orElse(false);
-    }
+    }*/
 
-    @Override
-    public Optional<UserDocuments> getUserDocumentById(Long id, UserDocuments userDocuments) {
+    /*@Override
+    public Optional<Document> getUserDocumentById(Long id) {
         return userDocumentsRepository.findByDocumentsIdAndOwner(id, userDocuments.getOwner())
                 .map(userDoc -> {
                     if (userDocumentsRepository.findByDocumentsIdAndOwner(userDoc.getId(), userDoc.getOwner()).isPresent()) {
@@ -102,10 +107,10 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
                         () -> new DocumentNotFoundException("Document not found with id: id = " + id +
                                 " and user: " + userDocuments.getOwner())
                 );
-    }
+    }*/
 
-    @Override
-    public boolean deleteUserDocumentById(Long id, UserDocuments userDocuments) {
+    /*@Override
+    public boolean deleteUserDocumentById(Long id) {
         return userDocumentsRepository.findByDocumentsIdAndOwner(id, userDocuments.getOwner()).map(userDoc -> {
             if (userDocumentsRepository.findByDocumentsIdAndOwner(id, userDoc.getOwner()).isPresent()) {
                 userDocumentsRepository.deleteByDocumentsIdAndOwner(userDoc.getId(), userDoc.getOwner());
@@ -113,10 +118,9 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
             }
             return false;
         }).orElse(false);
-    }
+    }*/
 
-    private Document createDocument(MultipartFile file,
-                                    UserDocuments userDocuments,
+    /*private Document createDocument(MultipartFile file,
                                     DocumentType documentType,
                                     DocumentGroups documentGroups,
                                     List<Attributes> attributesList
@@ -131,7 +135,6 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
         Document document = new Document(
                 file.getOriginalFilename(),
                 file.getBytes(),
-                userDocuments,
                 documentType,
                 documentGroups,
                 attributesList
@@ -140,5 +143,5 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
         Files.createFile(Path.of(uploadPath + File.separator + file.getOriginalFilename()));
 
         return documentRepository.saveAndFlush(document);
-    }
+    }*/
 }

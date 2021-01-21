@@ -18,6 +18,9 @@
 
     <properties>
         <java.version>11</java.version>
+        <flyway.user>postgres</flyway.user>
+        <flyway.password>Kolobok11274</flyway.password>
+        <flyway.schemas>public</flyway.schemas>
     </properties>
 
     <dependencies>
@@ -70,6 +73,22 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>6.5.7</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-maven-plugin -->
+        <!--<dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>6.5.7</version>
+        </dependency>-->
+
+
     </dependencies>
 
     <build>
@@ -102,6 +121,21 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.5.7</version>
+                <configuration>
+                    <user>postgres</user>
+                    <password>Kolobok11274</password>
+                    <schemas>
+                        <schema>public</schema>
+                    </schemas>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 

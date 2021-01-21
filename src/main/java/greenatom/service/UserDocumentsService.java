@@ -8,22 +8,20 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserDocumentsService {
-    Optional<UserDocuments> createUserFolder(UserDocuments userDocuments);
 
-    Optional<UserDocuments> addDocument(
+    void uploadDocument (Document document);
+
+    /*Optional<Document> addDocument(
             MultipartFile file,
-            UserDocuments userDocuments,
             User user,
             DocumentType documentType,
             DocumentGroups documentGroups,
             List<Attributes> attributesList
-    ) throws IOException;
+    ) throws IOException;*/
 
-    List<UserDocuments> getUserDocumentsList(UserDocuments userDocuments);
+    List<Document> getUserDocumentsList(User user);
 
-    boolean deleteUserFolder(Long id, UserDocuments userDocuments);
+    // Optional<Document> getUserDocumentById(Long id);
 
-    Optional<UserDocuments> getUserDocumentById(Long id, UserDocuments userDocuments);
-
-    boolean deleteUserDocumentById(Long id, UserDocuments userDocuments);
+    boolean deleteUserDocumentById(Long id);
 }

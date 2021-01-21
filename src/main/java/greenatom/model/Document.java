@@ -21,29 +21,17 @@ public class Document implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long id;  // Уникальный идентификатор сущности - документа
 
     @NotEmpty
     @Size(min = 4, max = 15)
     @Column(name = "name")
-    private String name;
+    private String name;  // Название документа
 
     @Lob
     @NotEmpty
     @Column(name = "document_data")
-    private byte[] documentData;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "document_id")
-    private UserDocuments document;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "document_type_id")
-    private DocumentType type;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "document_groups_id")
-    private DocumentGroups group;
+    private byte[] documentData;  // Сам документ
 
     @ManyToMany
     @JoinTable(
@@ -51,20 +39,20 @@ public class Document implements Serializable {
             joinColumns = @JoinColumn(name = "document_id"),
             inverseJoinColumns = @JoinColumn(name = "attribute_id")
     )
-    private List<Attributes> attributes = new ArrayList<>();
+    private List<Attributes> documentAttributes = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User owner;
 
     public Document(@NotEmpty @Size(min = 4, max = 15) String name,
                     @NotEmpty byte[] documentData,
-                    UserDocuments document,
-                    DocumentType type,
-                    DocumentGroups group,
-                    List<Attributes> attributes
+                    List<Attributes> documentAttributes,
+                    User documentOwner
     ) {
         this.name = name;
         this.documentData = documentData;
-        this.document = document;
-        this.type = type;
-        this.group = group;
-        this.attributes = attributes;
+        this.documentAttributes = documentAttributes;
+        this.owner = documentOwner;
     }
 }
