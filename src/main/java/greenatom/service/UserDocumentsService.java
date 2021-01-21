@@ -11,6 +11,7 @@ public interface UserDocumentsService {
 
     void uploadDocument (Document document);
 
+    Optional<Document> getUserDocumentById(Long id, User user);
     /*Optional<Document> addDocument(
             MultipartFile file,
             User user,

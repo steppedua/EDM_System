@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserDocumentsServiceImpl implements UserDocumentsService {
@@ -28,6 +29,11 @@ public class UserDocumentsServiceImpl implements UserDocumentsService {
     @Override
     public void uploadDocument(Document document) {
         userDocumentsRepository.save(document);
+    }
+
+    @Override
+    public Optional<Document> getUserDocumentById(Long id, User user) {
+        return userDocumentsRepository.findDocumentByIdAndOwner(id, user);
     }
 
     @Override

@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/documents")
@@ -36,7 +38,7 @@ public class DocumentController {
             @AuthenticationPrincipal User user,
             @RequestBody DocumentDto documentDto,
             @RequestParam("file") MultipartFile file
-    ) throws IOException {
+    ) {
 
         String responseMessage = "";
 
@@ -59,12 +61,16 @@ public class DocumentController {
     }
 
 
-    /*@GetMapping("/{id}")
-    public ResponseEntity<UserDocumentsDto> getDocument(@PathVariable("id") Long id, UserDocuments userDocuments) {
-        Optional<UserDocuments> userDocumentById = userDocumentsServiceImpl.getUserDocumentById(id, userDocuments);
+    @GetMapping("/{id}")
+    public ResponseEntity<DocumentDto> getDocument(
+            @PathVariable("id") Long id,
+            @AuthenticationPrincipal User user
+            ) {
+        Optional<Document> userDocumentById
+                = userDocumentsServiceImpl.getUserDocumentById(id, user);
 
-        return ResponseEntity.ok(documentMapper.toDocumentByIdDto(userDocumentById));
-    }*/
+        return ResponseEntity.ok(documentMapper.toDocumentDtoByDocument(userDocumentById.get()));
+    }
 
 //    @GetMapping
 //    public ResponseEntity<List<UserDocumentsDto>> getDocumentList(@AuthenticationPrincipal User user) {

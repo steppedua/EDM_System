@@ -5,7 +5,7 @@ create table attributes (
 );
 
 create table document (
-    id integer not null,
+    id bigserial not null,
     document_data oid,
     name varchar(100),
     user_id integer,
@@ -46,7 +46,8 @@ create table users_roles (
     role_id integer not null
 );
 
---create sequence hibernate_sequence start 1 increment 1
+create sequence hibernate_sequence start 1 increment 1;
+
 alter table if exists document add constraint fk_document_users
 foreign key (user_id) references users;
 
