@@ -1,6 +1,7 @@
 package greenatom.model;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -13,8 +14,6 @@ import java.util.List;
 @Table(name = "document")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Document implements Serializable {
@@ -31,6 +30,7 @@ public class Document implements Serializable {
     @Lob
     @NotEmpty
     @Column(name = "document_data")
+    @Type(type = "org.hibernate.type.ImageType")
     private byte[] documentData;  // Сам документ
 
     @ManyToMany

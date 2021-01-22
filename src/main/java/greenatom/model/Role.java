@@ -13,8 +13,6 @@ import java.util.List;
 @Table(name = "roles")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString(of = {"id", "name"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role implements Serializable {

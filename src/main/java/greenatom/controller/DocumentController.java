@@ -33,9 +33,8 @@ public class DocumentController {
     }
 
     // Метод для загрузки пользователем документа на сервер
-    @PostMapping(value = "/{userId}/create")
+    @PostMapping(value = "/create")
     public ResponseEntity<Optional<Document>> createDocument(
-            @PathVariable("userId") Long userId,
             @RequestParam("attributesList") List<Attributes> attributesList,
             @RequestParam("documentOwner") @AuthenticationPrincipal User owner,
             @RequestParam("file") MultipartFile file
@@ -44,18 +43,18 @@ public class DocumentController {
 //        String responseMessage = "";
 
 //        try {
-            //Document newDocument = documentMapper.toDocumentByDocumentDto(documentDto);
-            Document newDocument = new Document(
-                    file.getOriginalFilename(),
-                    file.getBytes(),
-                    attributesList,
-                    owner);
+        //Document newDocument = documentMapper.toDocumentByDocumentDto(documentDto);
+        Document newDocument = new Document(
+                file.getOriginalFilename(),
+                file.getBytes(),
+                attributesList,
+                owner);
 
-            Optional<Document> document = documentsServiceImpl.uploadDocument(newDocument, userId);
+        Optional<Document> document = documentsServiceImpl.uploadDocument(newDocument);
 
 //            responseMessage = "Uploaded the file successfully: " + file.getOriginalFilename();
 
-            return ResponseEntity.status(HttpStatus.OK).body(document);
+        return ResponseEntity.status(HttpStatus.OK).body(document);
 //        } catch (Exception e) {
 //            responseMessage = "Could not upload the file: " + file.getOriginalFilename() + "!";
 //
@@ -66,10 +65,10 @@ public class DocumentController {
     }
 
 
-    @GetMapping("/{id}/{userId}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<Document>> getDocument(
             @PathVariable("id") Long id,
-            @PathVariable("userId") @AuthenticationPrincipal Long userId
+           @AuthenticationPrincipal User userId
     ) {
         Optional<Document> userDocumentById = documentsServiceImpl.getUserDocumentById(id, userId);
 

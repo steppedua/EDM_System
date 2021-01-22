@@ -13,8 +13,6 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements Serializable {
@@ -41,7 +39,6 @@ public class User implements Serializable {
     )
     private List<Role> roles = new ArrayList<>();
 
-
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Document> documents = new ArrayList<>();
 }

@@ -5,6 +5,7 @@ import greenatom.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
@@ -28,19 +29,19 @@ public class DocumentsServiceImpl implements DocumentsService {
     @Value("${upload.path}")
     private String uploadPath;
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public Optional<Document> uploadDocument(Document document, Long userId) throws IOException {
+    public Optional<Document> uploadDocument(Document document) throws IOException {
 
         Files.createFile(Path.of(uploadPath + File.separator + document.getName()));
 
         return Optional.of(documentRepository.save(document));
-
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public Optional<Document> getUserDocumentById(Long id, Long userId) {
-        return documentRepository.findDocumentByIdAndOwnerId(id, userId);
+    public Optional<Document> getUserDocumentById(Long id, User userId) {
+        return documentRepository.findDocumentByIdAndOwner(id, userId);
     }
 
     @Override

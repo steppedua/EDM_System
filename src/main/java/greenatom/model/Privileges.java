@@ -13,8 +13,6 @@ import java.util.List;
 @Table(name = "privileges")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Privileges implements Serializable {

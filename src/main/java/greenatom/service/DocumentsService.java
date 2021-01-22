@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface DocumentsService {
 
-    Optional<Document> uploadDocument (Document document, Long userId) throws IOException;
+    Optional<Document> uploadDocument (Document document) throws IOException;
 
-    Optional<Document> getUserDocumentById(Long id, Long userId);
+    Optional<Document> getUserDocumentById(Long id, User userId);
     /*Optional<Document> addDocument(
             MultipartFile file,
             User user,

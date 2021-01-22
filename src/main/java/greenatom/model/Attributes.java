@@ -13,8 +13,6 @@ import java.util.List;
 @Table(name = "attributes")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Attributes implements Serializable {
