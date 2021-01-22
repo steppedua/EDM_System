@@ -35,9 +35,9 @@ public class DocumentController {
     // Метод для загрузки пользователем документа на сервер
     @PostMapping(value = "/{userId}/create")
     public ResponseEntity<Optional<Document>> createDocument(
-            @PathVariable("userId") @AuthenticationPrincipal Long userId,
+            @PathVariable("userId") Long userId,
             @RequestParam("attributesList") List<Attributes> attributesList,
-            @RequestParam("documentOwner") User owner,
+            @RequestParam("documentOwner") @AuthenticationPrincipal User owner,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
 
