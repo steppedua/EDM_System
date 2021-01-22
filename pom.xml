@@ -130,7 +130,7 @@
                 <configuration>
                     <url>jdbc:postgresql://localhost:5432/greenatom</url>
                     <user>postgres</user>
-                    <password>Kolobok11274</password>
+                    <password>12345</password>
                     <schemas>
                         <schema>public</schema>
                     </schemas>

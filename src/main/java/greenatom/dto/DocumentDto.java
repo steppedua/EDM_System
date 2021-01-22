@@ -1,6 +1,7 @@
 package greenatom.dto;
 
 import greenatom.model.Attributes;
+import greenatom.model.User;
 import lombok.*;
 
 import java.io.Serializable;
@@ -18,5 +19,5 @@ public class DocumentDto implements Serializable {
     private String documentName;  // Полное название документа. Например, "Купля-продажи сапог_2017_форма2.pdf"
     private byte[] value;  // Байт-массив документа - "сам документ"
     private List<Attributes> attributesList; // Список атрибутов документа
-    private String documentOwner;  // Имя владельца документа
+    private User documentOwner;  // Владелец документа
 }

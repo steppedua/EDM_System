@@ -1,17 +1,16 @@
 package greenatom.service;
 
 import greenatom.model.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserDocumentsService {
+public interface DocumentsService {
 
-    void uploadDocument (Document document);
+    Optional<Document> uploadDocument (Document document, Long userId) throws IOException;
 
-    Optional<Document> getUserDocumentById(Long id, User user);
+    Optional<Document> getUserDocumentById(Long id, Long userId);
     /*Optional<Document> addDocument(
             MultipartFile file,
             User user,

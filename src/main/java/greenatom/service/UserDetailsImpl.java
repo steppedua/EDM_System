@@ -1,7 +1,7 @@
 package greenatom.service;
 
-import greenatom.dto.UserDto;
-import lombok.Data;
+import greenatom.model.User;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,19 +10,25 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+
+//@Data
 public class UserDetailsImpl implements UserDetails {
 
-    private final UserDto userDto;
+    private User user;
     private List<GrantedAuthority> userAuthorities;
+
+    public UserDetailsImpl(User user) {
+        this.user = user;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        userAuthorities = userDto.getRoles()
-                .stream().map(role -> new SimpleGrantedAuthority(role.getName()))
+        return user.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
-
-        return userAuthorities;
     }
 
     public boolean hasAuthority(String authority) {
@@ -31,12 +37,12 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return userDto.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userDto.getUsername();
+        return user.getUsername();
     }
 
     @Override

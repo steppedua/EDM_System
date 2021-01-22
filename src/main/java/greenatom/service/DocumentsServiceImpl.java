@@ -5,35 +5,42 @@ import greenatom.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 @Service
-public class UserDocumentsServiceImpl implements UserDocumentsService {
+public class DocumentsServiceImpl implements DocumentsService {
 
-    private final DocumentRepository userDocumentsRepository;
     private final DocumentRepository documentRepository;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public UserDocumentsServiceImpl(DocumentRepository userDocumentsRepository,
-                                    DocumentRepository documentRepository
-    ) {
-        this.userDocumentsRepository = userDocumentsRepository;
+    public DocumentsServiceImpl(DocumentRepository documentRepository, UserServiceImpl userServiceImpl) {
         this.documentRepository = documentRepository;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @Value("${upload.path}")
     private String uploadPath;
 
     @Override
-    public void uploadDocument(Document document) {
-        userDocumentsRepository.save(document);
+    public Optional<Document> uploadDocument(Document document, Long userId) throws IOException {
+
+        Files.createFile(Path.of(uploadPath + File.separator + document.getName()));
+
+        return Optional.of(documentRepository.save(document));
+
     }
 
+    @Transactional
     @Override
-    public Optional<Document> getUserDocumentById(Long id, User user) {
-        return userDocumentsRepository.findDocumentByIdAndOwner(id, user);
+    public Optional<Document> getUserDocumentById(Long id, Long userId) {
+        return documentRepository.findDocumentByIdAndOwnerId(id, userId);
     }
 
     @Override
