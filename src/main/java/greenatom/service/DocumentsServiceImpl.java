@@ -18,12 +18,10 @@ import java.util.*;
 public class DocumentsServiceImpl implements DocumentsService {
 
     private final DocumentRepository documentRepository;
-    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public DocumentsServiceImpl(DocumentRepository documentRepository, UserServiceImpl userServiceImpl) {
+    public DocumentsServiceImpl(DocumentRepository documentRepository) {
         this.documentRepository = documentRepository;
-        this.userServiceImpl = userServiceImpl;
     }
 
     @Value("${upload.path}")
@@ -35,23 +33,24 @@ public class DocumentsServiceImpl implements DocumentsService {
 
         Files.createFile(Path.of(uploadPath + File.separator + document.getName()));
 
-        return Optional.of(documentRepository.save(document));
+        return Optional.of(documentRepository.saveAndFlush(document));
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public Optional<Document> getUserDocumentById(Long id, User userId) {
-        return documentRepository.findDocumentByIdAndOwner(id, userId);
+    public Optional<Document> getUserDocumentById(Long id, User user) {
+        return documentRepository.findDocumentByIdAndOwner(id, user);
     }
 
     @Override
     public List<Document> getUserDocumentsList(User user) {
-        return null;
+        return documentRepository.findAllDocumentsByOwnerId(user.getId());
     }
 
     @Override
-    public boolean deleteUserDocumentById(Long id) {
-        return false;
+    public boolean deleteDocumentByIdAndOwnerId(Long id, User user) {
+        documentRepository.deleteDocumentByIdAndOwnerId(id, user);
+        return true;
     }
 
     /*@Override

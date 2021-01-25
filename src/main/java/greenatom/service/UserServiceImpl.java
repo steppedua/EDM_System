@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         newUser.setId(user.getId());
         newUser.setUsername(user.getUsername());
         newUser.setPassword(user.getPassword());
-        newUser.setRoles(Collections.singletonList(roleRepository.findByName("ROLE_USER")));
+        newUser.setRoles(Collections.singleton(roleRepository.findByName("ROLE_USER")));
 
         return Optional.of(userRepository.saveAndFlush(newUser));
     }
@@ -63,5 +63,10 @@ public class UserServiceImpl implements UserService {
             }
             return false;
         }).orElse(false);
+    }
+
+    @Override
+    public Optional<User> findByLoginAndPassword(String login, String password) {
+        return userRepository.findByUsernameAndPassword(login, password);
     }
 }

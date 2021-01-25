@@ -41,7 +41,7 @@ public class Document implements Serializable {
     )
     private List<Attributes> documentAttributes = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
 

@@ -23,5 +23,5 @@ public interface DocumentsService {
 
     // Optional<Document> getUserDocumentById(Long id);
 
-    boolean deleteUserDocumentById(Long id);
+    boolean deleteDocumentByIdAndOwnerId(Long id, User user);
 }

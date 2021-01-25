@@ -57,10 +57,10 @@ foreign key (attribute_id) references attributes;
 alter table if exists document_attributes add constraint fk_doc_attr_document
 foreign key (document_id) references document;
 
-alter table if exists roles_privileges add constraint fk_roles_priveleges_priveleges
+alter table if exists roles_privileges add constraint fk_roles_privileges_privileges
 foreign key (privileges_id) references privileges;
 
-alter table if exists roles_privileges add constraint fk_roles_priveleges_roles
+alter table if exists roles_privileges add constraint fk_roles_privileges_roles
 foreign key (role_id) references roles;
 
 alter table if exists users_roles add constraint fk_users_roles_roles
