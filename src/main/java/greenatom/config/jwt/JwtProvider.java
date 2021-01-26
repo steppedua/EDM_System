@@ -7,12 +7,9 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.xml.bind.DatatypeConverter;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-
-import static javax.crypto.Cipher.SECRET_KEY;
 
 @Component
 @Log

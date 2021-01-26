@@ -1,13 +1,14 @@
 package greenatom.service;
 
 import greenatom.model.User;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@Getter
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserServiceImpl userServiceImpl;

@@ -4,10 +4,6 @@ import greenatom.dto.DocumentDto;
 import greenatom.model.Document;
 import greenatom.model.User;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-
-import java.util.Optional;
 
 @Mapper
 public interface DocumentMapper {

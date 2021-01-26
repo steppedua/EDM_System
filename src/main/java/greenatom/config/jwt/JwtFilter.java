@@ -1,12 +1,10 @@
 package greenatom.config.jwt;
 
-import greenatom.model.User;
 import greenatom.service.UserDetailsImpl;
 import greenatom.service.UserDetailsServiceImpl;
 import lombok.extern.java.Log;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -43,10 +41,9 @@ public class JwtFilter extends GenericFilterBean {
         if (token != null && jwtProvider.validateToken(token)) {
             String userLogin = jwtProvider.getLoginFromToken(token);
 
-            // Надо заменить возвращаемое значение userDetails на User, тогда @AuthenticationPrincipal будет доступен
             UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(userLogin);
 
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails.getUser(), null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 

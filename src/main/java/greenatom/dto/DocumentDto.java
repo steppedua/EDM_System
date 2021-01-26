@@ -2,12 +2,12 @@ package greenatom.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import greenatom.model.Attributes;
-import greenatom.model.User;
-import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 
 @Getter

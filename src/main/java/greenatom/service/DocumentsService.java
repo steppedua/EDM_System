@@ -1,6 +1,7 @@
 package greenatom.service;
 
-import greenatom.model.*;
+import greenatom.model.Document;
+import greenatom.model.User;
 
 import java.io.IOException;
 import java.util.List;

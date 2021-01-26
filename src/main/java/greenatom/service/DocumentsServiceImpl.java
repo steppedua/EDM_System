@@ -1,6 +1,7 @@
 package greenatom.service;
 
-import greenatom.model.*;
+import greenatom.model.Document;
+import greenatom.model.User;
 import greenatom.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DocumentsServiceImpl implements DocumentsService {

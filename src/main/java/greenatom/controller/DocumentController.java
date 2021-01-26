@@ -1,32 +1,20 @@
 package greenatom.controller;
 
 import greenatom.config.jwt.JwtProvider;
-import greenatom.dto.AuthenticationResponseDto;
 import greenatom.dto.DocumentDto;
 import greenatom.mappers.DocumentMapper;
 import greenatom.model.Document;
 import greenatom.model.User;
 import greenatom.service.DocumentsServiceImpl;
-import greenatom.service.UserDetailsImpl;
 import greenatom.util.ResponseUtils;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.JsonParser;
-import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
