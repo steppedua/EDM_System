@@ -32,4 +32,13 @@ public class Attributes implements Serializable {
     @ManyToMany(mappedBy = "documentAttributes")
     private List<Document> documents = new ArrayList<>();
     // У каждого документа может быть несколько атрибутов
+
+    @Override
+    public String toString() {
+        return "Attributes{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", documents=" + documents +
+                '}';
+    }
 }

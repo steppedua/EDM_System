@@ -1,5 +1,6 @@
 package greenatom.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,7 @@ public class Document implements Serializable {
     @Type(type = "org.hibernate.type.ImageType")
     private byte[] documentData;  // Сам документ
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "document_attributes",
@@ -44,6 +46,7 @@ public class Document implements Serializable {
     )
     private List<Attributes> documentAttributes = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User owner;
@@ -57,5 +60,16 @@ public class Document implements Serializable {
         this.documentData = documentData;
         this.documentAttributes = documentAttributes;
         this.owner = documentOwner;
+    }
+
+    @Override
+    public String toString() {
+        return "Document{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", documentData=" + documentData.length +
+                ", documentAttributes=" + documentAttributes +
+                ", owner=" + owner +
+                '}';
     }
 }

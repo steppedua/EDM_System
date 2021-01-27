@@ -39,4 +39,14 @@ public class Role implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "privileges_id")
     )
     private List<Privileges> privileges = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", users=" + users +
+                ", privileges=" + privileges +
+                '}';
+    }
 }

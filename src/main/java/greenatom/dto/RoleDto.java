@@ -19,4 +19,12 @@ public class RoleDto implements Serializable {
 
     @JsonProperty("name")
     private String name;
+
+    @Override
+    public String toString() {
+        return "RoleDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

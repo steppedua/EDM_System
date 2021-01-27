@@ -16,4 +16,9 @@ public class AuthenticationResponseDto implements Serializable {
 
     @JsonProperty("token")
     private String token;
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

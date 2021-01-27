@@ -27,4 +27,13 @@ public class DocumentDto implements Serializable {
 
     @JsonProperty("attributesList")
     private List<Attributes> attributesList; // Список атрибутов документа
+
+    @Override
+    public String toString() {
+        return "DocumentDto{" +
+                "docId=" + docId +
+                ", documentName='" + documentName + '\'' +
+                ", attributesList=" + attributesList +
+                '}';
+    }
 }

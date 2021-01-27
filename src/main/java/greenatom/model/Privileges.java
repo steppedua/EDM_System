@@ -31,4 +31,13 @@ public class Privileges implements Serializable {
 
     @ManyToMany(mappedBy = "privileges")
     private List<Role> roles = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Privileges{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

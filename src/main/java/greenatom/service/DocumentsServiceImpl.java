@@ -6,7 +6,6 @@ import greenatom.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class DocumentsServiceImpl implements DocumentsService {
 
     private final DocumentRepository documentRepository;
@@ -29,7 +29,7 @@ public class DocumentsServiceImpl implements DocumentsService {
     @Value("${upload.path}")
     private String uploadPath;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+
     @Override
     public Optional<Document> uploadDocument(Document document) throws IOException {
 
@@ -38,20 +38,20 @@ public class DocumentsServiceImpl implements DocumentsService {
         return Optional.of(documentRepository.saveAndFlush(document));
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+
     @Override
     public Optional<Document> getUserDocumentById(Long id, User user) {
-        return documentRepository.findDocumentByIdAndOwner(id, user);
+        return documentRepository.findDocumentByIdAndOwnerId(id, user.getId());
     }
 
     @Override
     public List<Document> getUserDocumentsList(User user) {
-        return documentRepository.findAllDocumentsByOwnerId(user.getId());
+        return documentRepository.getDocumentsByOwnerId(user.getId());
     }
 
     @Override
     public boolean deleteDocumentByIdAndOwnerId(Long id, User user) {
-        documentRepository.deleteDocumentByIdAndOwnerId(id, user);
+        documentRepository.deleteDocumentByIdAndOwnerId(id, user.getId());
         return true;
     }
 

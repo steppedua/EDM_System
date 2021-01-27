@@ -19,4 +19,9 @@ public class AuthenticationRequestDto implements Serializable {
 
     @JsonProperty("password")
     private String password;
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

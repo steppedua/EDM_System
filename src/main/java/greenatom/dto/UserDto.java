@@ -26,4 +26,9 @@ public class UserDto implements Serializable {
 
     @JsonProperty("roles")
     private List<RoleDto> roles;
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

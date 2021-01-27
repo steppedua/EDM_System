@@ -1,6 +1,5 @@
 package greenatom.controller;
 
-import greenatom.config.jwt.JwtProvider;
 import greenatom.dto.DocumentDto;
 import greenatom.mappers.DocumentMapper;
 import greenatom.model.Document;
@@ -22,15 +21,12 @@ import java.util.Optional;
 public class DocumentController {
     private final DocumentMapper documentMapper;
     private final DocumentsServiceImpl documentsServiceImpl;
-    private final JwtProvider jwtProvider;
 
     @Autowired
     public DocumentController(DocumentMapper documentMapper,
-                              DocumentsServiceImpl documentsServiceImpl,
-                              JwtProvider jwtProvider) {
+                              DocumentsServiceImpl documentsServiceImpl) {
         this.documentMapper = documentMapper;
         this.documentsServiceImpl = documentsServiceImpl;
-        this.jwtProvider = jwtProvider;
     }
 
     // Метод для загрузки пользователем документа на сервер
@@ -51,23 +47,22 @@ public class DocumentController {
         return ResponseEntity.status(HttpStatus.OK).body(document);
     }
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Document>> getDocument(
+    public ResponseEntity<DocumentDto> getDocument(
             @PathVariable("id") Long id,
             @AuthenticationPrincipal User user
     ) {
         Optional<Document> userDocumentById = documentsServiceImpl.getUserDocumentById(id, user);
 
-        return ResponseEntity.ok().body(userDocumentById);
+        return ResponseEntity.ok().body(documentMapper.toDocumentDto(userDocumentById.get()));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Document>> getDocumentList(@AuthenticationPrincipal User user) {
+    public ResponseEntity<List<DocumentDto>> getDocumentList(@AuthenticationPrincipal User user) {
 
         List<Document> userDocumentsList = documentsServiceImpl.getUserDocumentsList(user);
 
-        return ResponseEntity.ok().body(userDocumentsList);
+        return ResponseEntity.ok().body(documentMapper.toDocumentsListByOwnerIdDto(userDocumentsList));
     }
 
     @DeleteMapping("/{id}")
