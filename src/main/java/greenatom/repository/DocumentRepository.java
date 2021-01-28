@@ -22,7 +22,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     Optional<Document> findByName(String name);
 
     @Transactional
-    @Modifying
     @Query("SELECT u FROM Document u WHERE u.id= :id AND u.owner.id = :ownerId")
     Optional<Document> findDocumentByIdAndOwnerId(@Param("id") Long id, @Param("ownerId") Long ownerId);
 
