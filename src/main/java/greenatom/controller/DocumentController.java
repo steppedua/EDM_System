@@ -4,14 +4,13 @@ import greenatom.dto.DocumentDto;
 import greenatom.mappers.DocumentMapper;
 import greenatom.model.Document;
 import greenatom.model.User;
-import greenatom.service.DocumentServiceImpl;
+import greenatom.service.DocumentsServiceImpl;
 import greenatom.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,40 +19,54 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/documents")
 public class DocumentController {
-    private final DocumentServiceImpl documentServiceImpl;
     private final DocumentMapper documentMapper;
+    private final DocumentsServiceImpl documentsServiceImpl;
 
     @Autowired
-    public DocumentController(DocumentServiceImpl documentService, DocumentMapper documentMapper) {
-        this.documentServiceImpl = documentService;
+    public DocumentController(DocumentMapper documentMapper,
+                              DocumentsServiceImpl documentsServiceImpl) {
         this.documentMapper = documentMapper;
+        this.documentsServiceImpl = documentsServiceImpl;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<DocumentDto> createDocument(
-            @AuthenticationPrincipal User user,
-            @RequestParam("file") MultipartFile file
+    // Метод для загрузки пользователем документа на сервер
+    @PostMapping(value = "/create")
+    public ResponseEntity<Optional<Document>> createDocument(
+            @RequestBody DocumentDto documentDto,
+            @AuthenticationPrincipal User user
     ) throws IOException {
 
-//        documentServiceImpl.createDocument(file, user);
+        Document newDocument = new Document(
+                documentDto.getDocumentName(),
+                documentDto.getFile(),
+                documentDto.getAttributesList(),
+                user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        Optional<Document> document = documentsServiceImpl.uploadDocument(newDocument);
+
+        return ResponseEntity.status(HttpStatus.OK).body(document);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DocumentDto> getDocument(@PathVariable("id") Long id, @AuthenticationPrincipal User user) {
-        Optional<Document> document = documentServiceImpl.getDocumentById(id);
+    public ResponseEntity<DocumentDto> getDocument(
+            @PathVariable("id") Long id,
+            @AuthenticationPrincipal User user
+    ) {
+        Optional<Document> userDocumentById = documentsServiceImpl.getUserDocumentById(id, user);
 
-        return ResponseEntity.ok(documentMapper.toDocumentByIdDto(document.get()));
+        return ResponseEntity.ok().body(documentMapper.toDocumentDto(userDocumentById.get()));
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<List<DocumentDto>> getDocumentList(@AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(documentMapper.toDocumentsListDto(documentServiceImpl.getDocumentList()));
+
+        List<Document> userDocumentsList = documentsServiceImpl.getUserDocumentsList(user);
+
+        return ResponseEntity.ok().body(documentMapper.toDocumentsListByOwnerIdDto(userDocumentsList));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeDocumentById(@PathVariable("id") Long id, @AuthenticationPrincipal User user) {
-        return ResponseUtils.responseEntityOf(documentServiceImpl.removeDocumentById(id));
+        return ResponseUtils.responseEntityOf(documentsServiceImpl.deleteDocumentByIdAndOwnerId(id, user));
     }
 }

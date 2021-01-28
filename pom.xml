@@ -18,6 +18,9 @@
 
     <properties>
         <java.version>11</java.version>
+        <flyway.user>postgres</flyway.user>
+        <flyway.password>Kolobok11274</flyway.password>
+        <flyway.schemas>public</flyway.schemas>
     </properties>
 
     <dependencies>
@@ -60,9 +63,15 @@
         </dependency>
 
         <dependency>
+<<<<<<< HEAD
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <version>7.3.1</version>
+=======
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+>>>>>>> feature_nomer1_addDocuments
         </dependency>
 
         <dependency>
@@ -76,6 +85,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>6.5.7</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -110,6 +126,7 @@
                 </configuration>
             </plugin>
 
+<<<<<<< HEAD
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
@@ -125,6 +142,23 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+=======
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.5.7</version>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5432/greenatom</url>
+                    <user>postgres</user>
+                    <password>12345</password>
+                    <schemas>
+                        <schema>public</schema>
+                    </schemas>
+                </configuration>
+            </plugin>
+
+>>>>>>> feature_nomer1_addDocuments
         </plugins>
     </build>
 

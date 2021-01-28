@@ -15,4 +15,6 @@ public interface UserService {
     Optional<User> createUser(User user);
 
     boolean removeUser(Long id);
+
+    Optional<User> findByLoginAndPassword(String login, String password);
 }

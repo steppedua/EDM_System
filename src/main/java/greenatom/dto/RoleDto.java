@@ -1,16 +1,30 @@
 package greenatom.dto;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString(of = {"id", "name"})
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoleDto implements Serializable {
+
+    @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("name")
     private String name;
+
+    @Override
+    public String toString() {
+        return "RoleDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

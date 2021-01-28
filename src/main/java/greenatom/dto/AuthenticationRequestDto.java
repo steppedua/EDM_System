@@ -7,25 +7,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto implements Serializable {
-
-    @JsonProperty("id")
-    private Long id;
+public class AuthenticationRequestDto implements Serializable {
 
     @JsonProperty("username")
     private String username;
 
     @JsonProperty("password")
     private String password;
-
-    @JsonProperty("roles")
-    private List<RoleDto> roles;
 
     @Override
     public String toString() {

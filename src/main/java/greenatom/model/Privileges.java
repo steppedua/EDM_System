@@ -1,6 +1,9 @@
 package greenatom.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -13,8 +16,6 @@ import java.util.List;
 @Table(name = "privileges")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Privileges implements Serializable {
@@ -30,4 +31,13 @@ public class Privileges implements Serializable {
 
     @ManyToMany(mappedBy = "privileges")
     private List<Role> roles = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Privileges{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
 }

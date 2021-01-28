@@ -2,18 +2,31 @@ package greenatom.mappers;
 
 import greenatom.dto.DocumentDto;
 import greenatom.model.Document;
+import greenatom.model.User;
 import org.mapstruct.Mapper;
-import org.springframework.web.multipart.MultipartFile;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 import java.util.List;
 
 @Mapper
 public interface DocumentMapper {
-    DocumentDto toDocumentByDocumentNameDto(String documentName);
 
-    DocumentDto toDocumentByIdDto(Document document);
+    @Mappings({
+            @Mapping(target = "docId", source = "document.id"),
+            @Mapping(target = "documentName", source = "document.name"),
+            @Mapping(target = "file", source = "document.documentData"),
+            @Mapping(target = "attributesList", source = "document.documentAttributes")
+    })
+    DocumentDto toDocumentDto(Document document);
 
-    List<DocumentDto> toDocumentsListDto(List<Document> documents);
+    Document toCreateDocumentDto(DocumentDto documentDto, User user);
 
-    Document toCreateDocument(MultipartFile file);
+    @Mappings({
+            @Mapping(target = "docId", source = "document.id"),
+            @Mapping(target = "documentName", source = "document.name"),
+            @Mapping(target = "file", source = "document.documentData"),
+            @Mapping(target = "attributesList", source = "document.documentAttributes")
+    })
+    List<DocumentDto> toDocumentsListByOwnerIdDto(List<Document> userDocumentsList);
 }

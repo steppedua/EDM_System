@@ -1,42 +1,40 @@
 package greenatom.service;
 
-import greenatom.dto.UserDto;
-import lombok.Data;
+import greenatom.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
-    private final UserDto userDto;
-    private List<GrantedAuthority> userAuthorities;
+    private User user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        userAuthorities = userDto.getRoles()
+        return user.getRoles()
                 .stream().map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
-
-        return userAuthorities;
-    }
-
-    public boolean hasAuthority(String authority) {
-        return userAuthorities.stream().map(GrantedAuthority::getAuthority).anyMatch(("ROLE_" + authority)::equals);
     }
 
     @Override
     public String getPassword() {
-        return userDto.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userDto.getUsername();
+        return user.getUsername();
     }
 
     @Override
