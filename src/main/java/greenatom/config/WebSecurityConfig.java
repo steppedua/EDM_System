@@ -22,7 +22,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtFilter = jwtFilter;
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -31,8 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .antMatchers("/admin/*").hasRole("ADMIN")
-//                .antMatchers("/user/*").hasRole("USER")
                 .antMatchers("/auth/login").permitAll()
                 .anyRequest().authenticated()
                 .and()

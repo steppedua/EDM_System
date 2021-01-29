@@ -9,6 +9,7 @@ import greenatom.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class DocumentController {
         this.documentsServiceImpl = documentsServiceImpl;
     }
 
-    // Метод для загрузки пользователем документа на сервер
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PostMapping(value = "/create")
     public ResponseEntity<Optional<Document>> createDocument(
             @RequestBody DocumentDto documentDto,
@@ -47,6 +48,7 @@ public class DocumentController {
         return ResponseEntity.status(HttpStatus.OK).body(document);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<DocumentDto> getDocument(
             @PathVariable("id") Long id,
@@ -57,6 +59,7 @@ public class DocumentController {
         return ResponseEntity.ok().body(documentMapper.toDocumentDto(userDocumentById.get()));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/list")
     public ResponseEntity<List<DocumentDto>> getDocumentList(@AuthenticationPrincipal User user) {
 
@@ -65,6 +68,7 @@ public class DocumentController {
         return ResponseEntity.ok().body(documentMapper.toDocumentsListByOwnerIdDto(userDocumentsList));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeDocumentById(@PathVariable("id") Long id, @AuthenticationPrincipal User user) {
         return ResponseUtils.responseEntityOf(documentsServiceImpl.deleteDocumentByIdAndOwnerId(id, user));
