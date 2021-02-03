@@ -5,6 +5,7 @@ import greenatom.model.User;
 import greenatom.repository.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,20 +21,18 @@ import java.util.Optional;
 public class DocumentsServiceImpl implements DocumentsService {
 
     private final DocumentRepository documentRepository;
+    private final Environment environment;
 
     @Autowired
-    public DocumentsServiceImpl(DocumentRepository documentRepository) {
+    public DocumentsServiceImpl(DocumentRepository documentRepository, Environment environment) {
         this.documentRepository = documentRepository;
+        this.environment = environment;
     }
-
-    @Value("${upload.path}")
-    private String uploadPath;
-
 
     @Override
     public Optional<Document> uploadDocument(Document document) throws IOException {
 
-        Files.createFile(Path.of(uploadPath + File.separator + document.getName()));
+        Files.createFile(Path.of(environment.getProperty("upload.path") + File.separator + document.getName()));
 
         return Optional.of(documentRepository.saveAndFlush(document));
     }
